@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  mysqldb:
+    image: mysql:8
+    container_name: mysql-taskdb1
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: taskdb1
+    ports:
+      - "3312:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - springboot-mysql-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pdocker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: priyankasml/task1-backend:latest
+    container_name: springboot-taskdb1
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    ports:
+      - "8082:2000"
+    restart: on-failure
+    networks:
+      - springboot-mysql-net
+
+  frontend:
+    image: priyankasml/task1-frontend:latest
+    container_name: react-taskdb1
+    depends_on:
+      - backend
+    ports:
+      - "3040:80"
+    restart: on-failure
+    networks:
+      - springboot-mysql-net
+
+volumes:
+  mysql_data:
+
+networks:
+  springboot-mysql-net:
