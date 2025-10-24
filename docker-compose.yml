@@ -6,7 +6,7 @@ services:
     container_name: mysql-taskdb1
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: taskdb1
+      MYSQL_DATABASE: taskdb2
     ports:
       - "3312:3306"
     volumes:
