@@ -14,7 +14,7 @@ services:
     networks:
       - springboot-mysql-net
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pdocker"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
       interval: 10s
       timeout: 5s
       retries: 5
